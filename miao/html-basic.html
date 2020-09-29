@@ -6,9 +6,11 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Lorem</h1>
-    <h2>Lorem ipsum</h2>
-    <h3>Lorem ipsum dolor</h3>
+    <hgroup>
+      <h1 id="top">Lorem</h1>
+      <h2>Lorem ipsum</h2>
+      <h3>Lorem ipsum dolor</h3>
+    </hgroup>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id maxime
       corrupti, nulla earum possimus vitae omnis odio pariatur officia! Odit
@@ -139,7 +141,9 @@
 
         <dt>自我介绍</dt>
         <dd>
-          <textarea cols="30" rows="10">&lt;/textarea></textarea>
+          <textarea name="留言内容" cols="30" rows="10">
+&lt;/textarea&gt;
+          </textarea>
         </dd>
       </dl>
       <fieldset disabled>
@@ -149,6 +153,83 @@
         <input type="text" />
         <input type="text" />
       </fieldset>
+      <input type="submit" value="提交" />
+      <input type="reset" value="重置" />
+      <hr />
+      <table border="1">
+        <caption>
+          货品列表
+        </caption>
+        <col />
+        <col bgcolor="red" />
+        <thead>
+          <tr>
+            <th>编号</th>
+            <th>品名</th>
+            <th>进价</th>
+            <th>出价</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>001</th>
+            <td>苹果</td>
+            <td rowspan="2">5</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <th>001</th>
+            <td>橘子</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <th>001</th>
+            <td>香蕉</td>
+            <td>5</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <th>001</th>
+            <td>山竹</td>
+            <td>5</td>
+            <td>8</td>
+          </tr>
+        </tbody>
+      </table>
+      <img
+        src="https://drscdn.500px.org/photo/174778125/m%3D1170_k%3D1/2841ccf2a3720e8e794a6a6930f6ff2c"
+        alt=""
+        width="300"
+        height="450"
+        usemap="#themap"
+      />
+      <map name="themap">
+        <area
+          title="mi.com"
+          href="https://www.mi.com"
+          shape="rect"
+          coords="57,106,198,190"
+        />
+        <area title="top" href="#top" shape="circle" coords="130,260,88" />
+        <area
+          title="xxxx"
+          href="xxx"
+          shape="poly"
+          coords="57 78,203 80,225 253,169 385,8 268"
+        />
+      </map>
     </form>
+    <a href="https://www.mi.com" target="frame1">
+      点击我会在下面的frame里打开小米商场，但为什么打不开呢？
+    </a>
+    <br />
+    <iframe name="frame1" src="https://nodejs.org/en/" frameborder="0"></iframe>
+    <footer>
+      怎样&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在这两个字之间空这么大呢？
+      <br />
+      <span>怎样在页面中显示下面的内容呢？</span>
+      <br />
+      &lt;span>&lt;/span&gt;
+    </footer>
   </body>
 </html>
