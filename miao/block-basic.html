@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Bin</title>
+    <style>
+      body {
+        margin: 20px;
+      }
+      #headerBox {
+        background: red;
+      }
+      #headerBox > p {
+        width: 600px;
+        margin: auto;
+      }
+      #mainBox {
+        box-sizing: border-box;
+        max-width: 600px;
+        padding: 0 10px;
+        border: 2px solid black;
+        margin: 20px auto;
+      }
+      .section1,
+      .section2 {
+        height: 64px;
+        margin: 16px 0;
+        overflow-y: scroll;
+      }
+      .bgcontent {
+        background: #ee82ee;
+        height: 50px;
+      }
+      .bgcontent:hover {
+        margin-left: -10px;
+        margin-right: -10px;
+      }
+      footer {
+        width: 0px;
+        height: 0px;
+        margin: auto;
+        border: 50px solid orange;
+        border-color: transparent transparent orange transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <header id="headerBox">
+        <p>aaaaa</p>
+      </header>
+      <main id="mainBox">
+        <section class="section1">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloremque,
+          quam expedita, culpa consequatur tempora ratione illum blanditiis
+          molestiae ducimus aperiam sint perferendis inventore, modi maiores
+          corrupti ipsa dolor sed ut?
+        </section>
+        <div class="bgcontent"></div>
+        <section class="section2">
+          Impedit itaque nulla totam quidem debitis quibusdam! Laboriosam
+          excepturi facere atque commodi error quam minima ipsa officiis
+          facilis, architecto nobis eaque dolor quasi optio consectetur
+          voluptatem tempore aut suscipit. Eveniet?
+        </section>
+      </main>
+      <footer></footer>
+    </div>
+  </body>
+</html>
