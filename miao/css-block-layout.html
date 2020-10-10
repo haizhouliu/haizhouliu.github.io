@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css-block-layout</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      header {
+        width: 600px;
+        padding: 0 calc(50% - 300px);
+        margin: auto;
+        background-color: black;
+        color: white;
+      }
+      main {
+        width: 600px;
+        margin: auto;
+      }
+      main p {
+        margin-top: 16px;
+      }
+      ul.wrap,
+      ul.linkul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      ul.wrap li:hover,
+      #d1 > div > div:hover {
+        background: red;
+      }
+      ul.wrap li,
+      #d1 > div > div {
+        box-sizing: border-box;
+        width: 180px;
+        border: 3px solid black;
+        margin-bottom: 15px;
+        text-align: center;
+        line-height: 34px;
+        background-color: pink;
+      }
+      ul.wrap li:nth-child(n + 5):nth-child(-n + 8) {
+        margin-left: 210px;
+      }
+      ul.wrap li:nth-child(n + 9) {
+        margin-left: 420px;
+      }
+      ul.wrap li:nth-child(5),
+      ul.wrap li:nth-child(9) {
+        margin-top: -220px;
+      }
+      #d1 {
+        font-size: 0;
+      }
+      #d1 > div {
+        display: inline-block;
+      }
+      #d1 #div1,
+      #d1 #div2,
+      #d1 #div3 {
+        font-size: 16px;
+      }
+      #d1 #div1,
+      #d1 #div2 {
+        margin-right: 30px;
+      }
+      ul.linkul li {
+        border-bottom: 1px dotted black;
+      }
+      ul.linkul li:last-child {
+        border-bottom: none;
+      }
+      p.foot {
+        height: 40px;
+        background: rgb(238, 138, 238);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <header id="headerbox">hello world 请调整浏览器窗口大小查看效果</header>
+      <main>
+        <p>
+          页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体
+          宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px
+          页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体
+          宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px
+          页面主体 宽度600px 页面主体 宽度600px 页面主体 宽度600px 页面主体
+          宽度600px
+        </p>
+        <ul class="wrap">
+          <li>宽180高40(包含边框)</li>
+          <li>水平间隙30px</li>
+          <li>垂直间隙15px</li>
+          <li>边框宽度3px</li>
+          <li>产品1</li>
+          <li>产品2</li>
+          <li>产品</li>
+          <li>产品</li>
+          <li>产品5</li>
+          <li>产品</li>
+          <li>产品</li>
+          <li>产品</li>
+        </ul>
+        <div id="d1">
+          <div id="div1">
+            <div>宽180高40(包含边框)</div>
+            <div>水平间隙30px</div>
+            <div>垂直间隙15px</div>
+            <div>边框宽度3px</div>
+          </div>
+          <div id="div2">
+            <div>产品1</div>
+            <div>产品</div>
+            <div>产品</div>
+            <div>产品</div>
+          </div>
+          <div id="div3">
+            <div>产品5</div>
+            <div>产品</div>
+            <div>产品</div>
+            <div>产品</div>
+          </div>
+        </div>
+        <ul class="linkul">
+          <li>link</li>
+          <li>link</li>
+          <li>link</li>
+          <li>link</li>
+          <li>link</li>
+        </ul>
+      </main>
+      <p class="foot">
+        <span style="display: block">©版权所有</span>
+        <span>本页所有布局均使用块元素</span>
+      </p>
+    </div>
+  </body>
+</html>
