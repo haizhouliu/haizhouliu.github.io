@@ -1,0 +1,21 @@
+.box {
+  width: 180px;
+  border: 1px solid silver;
+}
+.icon {
+  background-image: url(https://www.google.com/images/nav_logo299_hr.webp);
+}
+.icon-google {
+  height: 60px;
+  background-position: -4px -89px;
+}
+.icon-emptyStar {
+  width: 24px;
+  height: 27px;
+  background-position: -203px -519px;
+}
+.icon-x {
+  width: 24px;
+  height: 24px;
+  background-position: -281px -457px;
+}
