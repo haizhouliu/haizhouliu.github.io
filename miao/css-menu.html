@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>css-menu</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+      ul {
+        margin: 0;
+        padding: 0;
+        background-color: #282c34;
+        color: #9da5b4;
+      }
+      ul.content1 > li {
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+      }
+      ul > li:hover > ul {
+        display: block;
+      }
+      li {
+        padding: 20px;
+        list-style: none;
+        white-space: nowrap;
+      }
+      li:hover {
+        background-color: #3e4249;
+        color: white;
+      }
+      li li ul {
+        top: 0;
+        left: 100%;
+      }
+      li.level1 > ul {
+        left: 0;
+        top: 100%;
+      }
+      ul li {
+        position: relative;
+      }
+      ul ul {
+        display: none;
+        position: absolute;
+      }
+      li span {
+        position: absolute;
+        right: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <ul class="content1">
+        <li class="level1">
+          文件(F)文件(F)文件(F)文件(F)文件(F)
+          <ul class="content2">
+            <li>新建文件(E)</li>
+            <li class="level2">
+              将文件夹添加到工作区 <span>&gt;</span>
+              <ul>
+                <li>撤销(E) Lorem ipsum dolor sit.</li>
+                <li>
+                  没了 <span>&gt;</span>
+                  <ul>
+                    <li>撤销(E) Lorem ipsum dolor sit.</li>
+                    <li>选择(S)</li>
+                    <li>查看(V)</li>
+                    <li>
+                      没了 <span>&gt;</span>
+                      <ul>
+                        <li>真没了</li>
+                        <li>Lorem ipsum dolor sit.</li>
+                        <li>选择(V)</li>
+                        <li>选择(G)</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li>查看(V)</li>
+                <li>转到(G)</li>
+              </ul>
+            </li>
+            <li>
+              有<span>&gt;</span>
+              <ul>
+                <li>撤销(E) Lorem ipsum dolor sit.</li>
+                <li>选择(S)</li>
+                <li>查看(V)</li>
+                <li>转到(G)</li>
+              </ul>
+            </li>
+            <li>退出</li>
+          </ul>
+        </li>
+        <li class="level1">
+          编辑(E)
+          <ul>
+            <li>这个也有</li>
+            <li>在文件夹中查找</li>
+            <li>
+              查看(V)<span>&gt;</span>
+              <ul>
+                <li>撤销(E) Lorem ipsum dolor sit.</li>
+                <li>选择(S)</li>
+                <li>查看(V)</li>
+                <li>转到(G)</li>
+              </ul>
+            </li>
+            <li>转到(G)</li>
+          </ul>
+        </li>
+        <li>没了(S)</li>
+        <li>查看(V)</li>
+        <li>转到(G)</li>
+      </ul>
+    </div>
+  </body>
+</html>
