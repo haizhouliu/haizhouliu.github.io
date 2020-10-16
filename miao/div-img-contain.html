@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>div-img-contain</title>
+    <style>
+      img.p1 {
+        width: 300px;
+        height: 200px;
+        object-fit: contain;
+        background-color: silver;
+      }
+      section {
+        width: 300px;
+        height: 200px;
+        background-color: silver;
+        position: relative;
+      }
+      section img {
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+      }
+      div {
+        width: 200px;
+        height: 300px;
+        background-color: silver;
+        line-height: 300px;
+      }
+      div img {
+        max-width: 100%;
+        max-height: 100%;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>img object-fit</h2>
+    <img
+      class="p1"
+      src="https://cn.bing.com/th?id=OHR.OchreSeaStar_EN-CN3707152741_800x480.jpg"
+      alt=""
+    />
+    <h2>绝对定位居中</h2>
+    <section>
+      <img
+        src="https://cn.bing.com/th?id=OHR.OchreSeaStar_EN-CN3707152741_800x480.jpg"
+        alt=""
+      />
+    </section>
+    <h2>line-height + vertical-align</h2>
+    <div>
+      <img
+        src="https://format-com-cld-res.cloudinary.com/image/private/s--D1Ay01Ow--/c_limit,g_center,h_65535,w_550/fl_keep_iptc.progressive,q_95/v1/93d40fb624bc6a78fa460ad2fad45e02/JESSICA-CLEMENTS-CONSTANCE-VICTORIA-EDIT-4web.jpg"
+        alt=""
+      />
+    </div>
+  </body>
+</html>
