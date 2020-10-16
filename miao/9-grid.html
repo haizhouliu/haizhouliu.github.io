@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>9-grid</title>
+    <style>
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        width: 140px;
+        height: 140px;
+        margin: auto;
+        font-size: 0;
+      }
+      li {
+        font-size: 16px;
+        text-align: center;
+        line-height: 40px;
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        background-color: #f0f0f0;
+      }
+      ul.wrap1 {
+        background-color: blue;
+      }
+      ul.wrap1 li:nth-child(3n + 1),
+      ul.wrap1 li:nth-child(3n + 2),
+      ul.wrap1 li:nth-child(3n + 3) {
+        margin-left: 5px;
+        margin-top: 5px;
+      }
+      ul.wrap1 li:hover {
+        box-shadow: 0px 0px 0px 5px red;
+        color: green;
+        cursor: pointer;
+      }
+      ul.wrap2 li {
+        border: 5px solid blue;
+      }
+      ul.wrap2 li:nth-child(3n + 1),
+      ul.wrap2 li:nth-child(3n + 2) {
+        margin-right: -5px;
+      }
+      ul.wrap2 li:nth-child(-n + 6) {
+        margin-bottom: -5px;
+      }
+      ul.wrap2 li:hover {
+        border: 5px solid red;
+        position: relative;
+        cursor: pointer;
+        color: green;
+      }
+      table {
+        margin: auto;
+        border-collapse: collapse;
+      }
+      td {
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        background-color: silver;
+      }
+      tr {
+        border: 5px solid blue;
+      }
+      col {
+        border: 5px solid blue;
+      }
+      td:hover {
+        border: 5px solid red;
+        color: green;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <marquee>inline-block + box-shadow</marquee>
+    <ul class="wrap1">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+    </ul>
+    <marquee>表格布局</marquee>
+    <table>
+      <col />
+      <col />
+      <col />
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+        </tr>
+      </tbody>
+    </table>
+    <marquee>定位</marquee>
+    <ul class="wrap2">
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+    </ul>
+  </body>
+</html>
