@@ -5,6 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>abs-center</title>
+    <style>
+      html {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      * {
+        box-sizing: inherit;
+      }
+      section {
+        margin: auto;
+        margin-bottom: 30px;
+        border: 1px solid red;
+        box-sizing: border-box;
+      }
+      section.s1 {
+        width: 30%;
+        height: 30%;
+        position: relative;
+      }
+      /* margin生效 顶着四周 */
+      section.s1 div {
+        width: 60%;
+        height: 60%;
+        background-color: silver;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+      section.s2 {
+        width: 300px;
+        height: 200px;
+        line-height: 200px;
+        font-size: 0;
+        text-align: center;
+      }
+      section.s2 span {
+        display: inline-block;
+        width: 200px;
+        line-height: normal;
+        background-color: silver;
+        vertical-align: middle;
+        font-size: 16px;
+      }
+      table {
+        width: 30%;
+        border: 1px solid red;
+        text-align: center;
+        margin: auto;
+        margin-bottom: 200px;
+      }
+      td.td1 {
+        height: 200px;
+      }
+      .tdiv {
+        width: 60%;
+        margin: auto;
+        background-color: silver;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <marquee>定位 + 定宽定高</marquee>
+    <section class="s1">
+      <div>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus,
+        aspernatur.
+      </div>
+    </section>
+    <marquee>行内</marquee>
+    <section class="s2">
+      <span>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus,
+        temporibus.
+      </span>
+    </section>
+    <marquee>table</marquee>
+    <table>
+      <tbody>
+        <tr>
+          <td class="td1">
+            <div class="tdiv">
+              orem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consectetur
+              adipisicing elit. Quibusdam, nisi?
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>
