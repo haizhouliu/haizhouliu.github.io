@@ -14,13 +14,14 @@
         border: 2px solid silver;
         border-radius: 999px;
         position: relative;
-        transition: 0.3s;
+        transition: 1s;
       }
       label span {
         display: inline-block;
-        width: 67px;
+        width: 47px;
         height: 67px;
-        background-color: #fff;
+        padding: 0 10px;
+        background-color: white;
         border-radius: 999px;
         box-shadow: 1px 3px 3px 3px rgba(214, 214, 214, 0.5);
         position: absolute;
@@ -28,15 +29,18 @@
         bottom: 0;
         left: 7px;
         margin: auto;
-        transition: 0.29s;
+        transition: left 0.9s, width 0.4s 0.15s, padding 0.7s;
       }
       input:checked + label {
         box-shadow: 0 0 0 50px inset #30f34b;
         border-color: #30f34b;
       }
       input:checked + label span {
+        transition: left 0.9s, width 0.4s, padding 0.3s 0.15s;
         left: 60px;
         box-shadow: 1px 3px 3px 3px rgba(0, 0, 0, 0.1);
+        width: 67px;
+        padding: 0;
       }
       label:hover {
         cursor: pointer;
