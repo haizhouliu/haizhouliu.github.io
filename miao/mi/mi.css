@@ -1,0 +1,251 @@
+body {
+  margin: 0;
+  font-style: 12px;
+}
+a {
+  text-decoration: none;
+}
+div.topbarBannerWrapper a {
+  display: block;
+  height: 120px;
+  min-width: 1226px;
+  background-size: auto 120px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(./images/topbanner.jpg);
+}
+div.site-topbar {
+  background-color: #333333;
+  min-width: 1226px;
+}
+div.site-topbar div.container {
+  width: 1226px;
+  height: 40px;
+  line-height: 40px;
+  margin: auto;
+  font-size: 12px;
+}
+div.topbar-nav,
+div.topbar-cart,
+div.topbar-info {
+  display: inline-block;
+}
+div.topbar-cart,
+div.topbar-info {
+  float: right;
+}
+div.topbar-cart {
+  width: 120px;
+  text-align: center;
+  color: #b0b0b0;
+  background: #424242;
+  margin-left: 15px;
+}
+div.topbar-cart > a > img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 0.3em;
+}
+/* div.container div.topbar-cart:hover {
+  background-color: white;
+} */
+div.container div.topbar-cart:hover a {
+  color: orange;
+}
+div.container div.topbar-nav a,
+div.container div.topbar-cart a,
+div.container div.topbar-info a {
+  display: inline-block;
+  color: #b0b0b0;
+}
+div.container div.topbar-nav a:hover,
+div.container div.topbar-info a:hover {
+  color: white;
+}
+div.container div.topbar-nav span.sep,
+div.container div.topbar-info span.sep {
+  color: #424242;
+  margin: 0 0.3em;
+}
+div.site-header div.container {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 1226px;
+  height: 100px;
+  margin: auto;
+}
+div.site-header div.container div.header-logo {
+  float: left;
+  width: 55px;
+  height: 55px;
+  margin-top: 22px;
+  margin-right: 2px;
+  background-color: #ff6700;
+  position: relative;
+  overflow: hidden;
+}
+div.site-header {
+  position: relative;
+}
+div.site-header div.header-logo::before {
+  content: "";
+  width: 55px;
+  height: 55px;
+  position: absolute;
+  left: -100%;
+  background-image: url(./images/mi-home.png);
+  background-position: center;
+  transition: 0.3s;
+}
+div.site-header div.header-logo::after {
+  content: "";
+  width: 55px;
+  height: 55px;
+  position: absolute;
+  left: 0;
+  background-image: url(./images/mi-logo.png);
+  background-position: center;
+  transition: 0.3s;
+}
+div.site-header div.header-logo:hover::after {
+  left: 100%;
+}
+div.site-header div.header-logo:hover::before {
+  left: 0;
+}
+div.site-header div.header-nav {
+  width: 850px;
+  float: left;
+  overflow: hidden;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+div.site-header div.header-nav ul.nav-list {
+  float: left;
+  height: 99px;
+  line-height: 99px;
+  margin-left: 180px;
+}
+div.site-header div.header-nav ul.nav-list2 {
+  display: inline-block;
+  height: 88px;
+  padding-top: 11px;
+  line-height: 76px;
+}
+div.site-header div.header-nav ul.nav-list > li,
+div.site-header div.header-nav ul.nav-list2 > li {
+  height: 100%;
+  float: left;
+  padding: 0 10px;
+}
+div.site-header div.header-nav ul.nav-list2 li:hover {
+  cursor: pointer;
+  color: #ff6700;
+}
+div.site-header div.header-nav ul.nav-list > li > ul > li {
+  line-height: normal;
+}
+div.site-header div.header-nav ul.nav-list li.nav-item > ul {
+  position: absolute;
+  z-index: 50;
+  background-color: #fff;
+  top: 100%;
+  left: 0;
+  width: 1226px;
+  padding: 0 calc(50% - 1226px / 2);
+  height: 0;
+  overflow: hidden;
+  transition: 1s;
+}
+div.site-header div.header-nav ul.nav-list:hover li.nav-item ul.mbwrapper {
+  border-top: 1px solid #e0e0e0;
+  height: 230px;
+}
+div.site-header div.header-nav ul.nav-list li.nav-item ul.mbwrapper > li {
+  width: 180px;
+  height: 166px;
+  padding: 35px 12px 0;
+  float: left;
+  position: relative;
+  font-size: 12px;
+  text-align: center;
+}
+div.site-header div.header-nav ul.nav-list li.nav-item ul.mbwrapper > li > div {
+  color: #ff6700;
+  margin-top: -8px;
+}
+div.site-header div.header-nav ul.nav-list li.nav-item ul.mbwrapper > li > p {
+  color: black;
+}
+div.site-header
+  div.header-nav
+  ul.nav-list
+  li.nav-item
+  ul.mbwrapper
+  > li::before {
+  display: inline-block;
+  content: "";
+  width: 1px;
+  height: 100px;
+  background-color: #e0e0e0;
+  position: absolute;
+  left: 0px;
+}
+div.site-header
+  div.header-nav
+  ul.nav-list
+  li.nav-item
+  ul.mbwrapper
+  li.firstli-clearbf::before {
+  content: "";
+  width: 0;
+}
+div.site-header div.header-nav ul.nav-list > li.nav-item:hover {
+  color: #ff6700;
+  cursor: pointer;
+}
+div.site-header div.header-nav ul.nav-list > li.nav-item:hover > ul {
+  box-shadow: 0 3px 4px #e0e0e0;
+  height: 230px;
+  transition: box-shadow 0.2s, height 0.3s;
+  z-index: 60;
+}
+div.site-header div.header-nav ul.nav-list > li.nav-item:hover > ul > li > p {
+  color: black;
+}
+div.site-header div.header-search {
+  width: 296px;
+  height: 50px;
+  margin-top: 25px;
+  float: right;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+}
+div.site-header div.header-search .search-text {
+  outline: none;
+  width: 223px;
+  height: 50px;
+  border: none;
+  padding: 0 10px;
+}
+div.site-header div.header-search span.search-btn {
+  float: right;
+  width: 52px;
+  height: 50px;
+  border-left: 1px solid #e0e0e0;
+  box-sizing: border-box;
+  background-image: url(./images/搜索.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+div.site-header div.header-search span.search-btn:hover {
+  background-color: #ff6700;
+}
+div.site-header div.header-search:hover,
+div.site-header div.header-search:hover span.search-text {
+  border-color: #b0b0b0;
+}
