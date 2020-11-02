@@ -155,14 +155,23 @@ div.site-header div.header-nav ul.nav-list li.nav-item > ul {
   background-color: #fff;
   top: 100%;
   left: 0;
-  width: 1226px;
+  right: 0;
   padding: 0 calc(50% - 1226px / 2);
   height: 0;
   overflow: hidden;
-  transition: 1s;
+  transition: border-top 0s 0.55s, height 0.55s, box-shadow 0.23s, z-index 0.6s;
+  border-top: 1px solid white;
+  box-shadow: 0 0 0 white;
+  box-sizing: border-box;
+}
+div.site-header div.header-nav ul.nav-list > li.nav-item:hover > ul {
+  border-top: 1px solid #e0e0e0;
+  transition: box-shadow 0s, height 0.5s, border-top 0s;
+  z-index: 60;
+  height: 230px;
 }
 div.site-header div.header-nav ul.nav-list:hover li.nav-item ul.mbwrapper {
-  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 3px 4px #e0e0e0;
   height: 230px;
 }
 div.site-header div.header-nav ul.nav-list li.nav-item ul.mbwrapper > li {
@@ -208,12 +217,7 @@ div.site-header div.header-nav ul.nav-list > li.nav-item:hover {
   color: #ff6700;
   cursor: pointer;
 }
-div.site-header div.header-nav ul.nav-list > li.nav-item:hover > ul {
-  box-shadow: 0 3px 4px #e0e0e0;
-  height: 230px;
-  transition: box-shadow 0.2s, height 0.3s;
-  z-index: 60;
-}
+
 div.site-header div.header-nav ul.nav-list > li.nav-item:hover > ul > li > p {
   color: black;
 }
