@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>css-3d</title>
+    <style>
+      @keyframes square {
+        from {
+          transform: rotatex(20deg) rotatey(20deg);
+        }
+        to {
+          transform: rotatex(380deg) rotatey(380deg);
+        }
+      }
+      section {
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        transform-style: preserve-3d;
+        transform: perspective(900px) rotatex(20deg) rotatey(20deg);
+        animation-name: square;
+        animation-iteration-count: infinite;
+        animation-duration: 13s;
+        animation-timing-function: linear;
+      }
+      html:hover div {
+        box-shadow: 0 0 0 50px rgba(0, 0, 0, 0.3);
+      }
+      div {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+        transition: 3s;
+      }
+      div:nth-child(1) {
+        transform: rotatex(90deg) translatez(200px);
+        background-image: linear-gradient(rgb(0, 0, 255), rgb(0, 255, 255));
+      }
+      div:nth-child(2) {
+        transform: rotatex(90deg);
+        background-image: linear-gradient(rgb(255, 0, 0), rgb(255, 255, 0));
+      }
+      div:nth-child(3) {
+        transform: rotatey(90deg) translatey(-100px) translatez(100px);
+        background-image: linear-gradient(rgb(0, 255, 255), rgb(0, 255, 0));
+      }
+      div:nth-child(4) {
+        transform: rotatey(90deg) translatey(-100px) translatez(-100px);
+        background-image: linear-gradient(rgb(255, 0, 255), rgb(255, 0, 0));
+      }
+      div:nth-child(5) {
+        transform: translatey(-100px) translatez(-100px);
+      }
+      div:nth-child(6) {
+        transform: translatey(-100px) translatez(100px);
+        background-image: linear-gradient(rgb(255, 255, 0), rgb(255, 255, 255));
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div>1</div>
+      <div>2</div>
+      <div>3</div>
+      <div>4</div>
+      <div>5</div>
+      <div>6</div>
+    </section>
+  </body>
+</html>
