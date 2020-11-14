@@ -883,5 +883,112 @@
       }
       console.log(maxn);
     </script>
+    <script type="foo" id="ch0105/39">
+      var n = Number(prompt("请输入n值"));
+      var sum = 0;
+      for (var i = 1; i <= n; i++) {
+        var flag = false;
+        var j = i;
+        while (j > 0) {
+          var digit = j % 10;
+          if (digit == 7) {
+            flag = true;
+            break;
+          }
+          j = (j - digit) / 10;
+        }
+        if (!flag && i % 7 != 0) {
+          sum += i ** 2;
+        }
+      }
+      console.log(sum);
+    </script>
+    <script type="foo" id="ch0105/40">
+      var n = Number(prompt("请输入n值"));
+      var count = 0;
+      for (var i = 1; i <= n; i++) {
+        var j = i;
+        while (j > 0) {
+          var digit = j % 10;
+          if (digit == 1) {
+            count++;
+          }
+          j = (j - digit) / 10;
+        }
+      }
+      console.log(count);
+    </script>
+    <script type="foo" id="ch0105/41">
+      var m = Number(prompt("请输入n值"));
+      var n = Number(prompt("请输入n值"));
+      var count = 0;
+      for (var i = m; i <= n; i++) {
+        var j = i;
+        while (j > 0) {
+          var digit = j % 10;
+          if (digit == 2) {
+            count++;
+          }
+          j = (j - digit) / 10;
+        }
+      }
+      console.log(count);
+    </script>
+    <script type="foo" id="ch0105/42">
+      var h = Number(prompt("请输入h值"));
+      var w = Number(prompt("请输入w值"));
+      var m = prompt("请输入符号");
+      var n = Number(prompt("请输入值"));
+      var result = "";
+      if (n == 1) {
+        for (var i = 0; i < h; i++) {
+          for (var j = 0; j < w; j++) {
+            result = result + m;
+          }
+          result = result + "\n";
+        }
+      }
+      if (n == 0) {
+        for (var i = 0; i < h; i++) {
+          if (i == 0 || i == h - 1) {
+            for (var j = 0; j < w; j++) {
+              result = result + m;
+            }
+            result = result + "\n";
+          } else {
+            result = result + m;
+            for (var j = 0; j < w - 2; j++) {
+              result = result + " ";
+            }
+            result = result + m + "\n";
+          }
+        }
+      }
+      console.log(result);
+    </script>
+    <script type="foo" id="ch0105/43">
+      var n = Number(prompt("请输入值"));
+      var p = Math.ceil(n / 2);
+      var ary = [];
+      for (var i = 2; i <= p; i++) {
+        if (
+          (i % 2 != 0 && i % 3 != 0 && i % 5 != 0 && i % 7 != 0) ||
+          i == 2 ||
+          i == 3 ||
+          i == 5 ||
+          i == 7
+        ) {
+          ary.push(i);
+        }
+      }
+      for (var item in ary) {
+        var l = n % ary[item];
+        var k = n / ary[item];
+        if (l == 0 && ary.includes(k)) {
+          console.log(k);
+          break;
+        }
+      }
+    </script>
   </body>
 </html>
