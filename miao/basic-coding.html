@@ -417,7 +417,7 @@
         var score = Number(prompt("请输入第" + (i + 1) + "个值"));
         sum += score;
       }
-      console.log(sum, Number((sum / n).toFixed(5)));
+      console.log(sum, (sum / n).toFixed(5));
     </script>
     <script type="foo" id="ch0105/05">
       var n = Number(prompt("请输入n的值"));
@@ -689,7 +689,7 @@
         var b9 = ((i - a9) / 9) % 9;
         var c9 = ((i - a9 - b9 * 9) / 9 / 9) % 9;
         if (a7 == c9 && b7 == b9 && c7 == a9) {
-          console.log(i, "" + c7 + b7 + a7, "" + c9 + b9 + a9);
+          // console.log(i, "" + c7 + b7 + a7, "" + c9 + b9 + a9);
         }
       }
       console.log("（不提供）");
@@ -730,7 +730,7 @@
         result += digit + " ";
         n = (n - digit) / 10;
       } while (n > 0);
-      console.log(result);
+      console.log(result.slice(0, result.length - 1));
     </script>
     <script type="foo" id="ch0105/29">
       var n = Number(prompt("请输入值"));
@@ -860,6 +860,28 @@
         sum += x ** i;
       }
       console.log(sum.toFixed(2));
+    </script>
+    <script type="foo" id="ch0105/37">
+      var m = Number(prompt("请输入值"));
+      var n = Number(prompt("请输入值"));
+      var x = Number(prompt("请输入值"));
+      var maxn = n;
+      var initialm = 0;
+      for (var i = x; i > 0; i) {
+        for (var j = 1; j <= i; j++) {
+          initialm = j * maxn;
+          if (initialm >= m) {
+            i = x - j;
+            maxn = maxn + Math.floor(m / 2);
+            initialm = 0;
+            break;
+          }
+        }
+        if (maxn > m) {
+          break;
+        }
+      }
+      console.log(maxn);
     </script>
   </body>
 </html>
