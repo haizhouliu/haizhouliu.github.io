@@ -28,8 +28,9 @@ var haizhouliu = (function () {
     }
     return result;
   }
-  function difference(array, values = []) {
+  function difference(array, ...values) {
     let result = [];
+    values = flattenDeep(values);
     for (let i = 0; i < array.length; i++) {
       if (!values.includes(array[i])) {
         result.push(array[i]);
@@ -170,8 +171,17 @@ var haizhouliu = (function () {
   }
   function pullAt(array, indexes = []) {
     let result = [];
-    for (let i = 0; i < indexes.length; i++) {
-      result.push(array.splice(indexes[i--], 1)[0]);
+    let nums = array.slice();
+    let nums2 = array.slice();
+    let p = array;
+    p.length = 0;
+    for (let i = 0; i < nums2.length; i++) {
+      if (indexes.includes(i)) {
+        result.push(nums2.splice(i, 1)[0]);
+        nums2 = nums.slice();
+      } else {
+        p.push(nums2[i]);
+      }
     }
     return result;
   }
