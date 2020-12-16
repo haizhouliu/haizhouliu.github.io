@@ -1,3 +1,9 @@
+/*
+ * @Description: lodash部分函数实现
+ * @Author: xxx
+ * @Date: 2020-12-08 15:04:25
+ * @LastEditTime: 2020-12-16 22:36:37
+ */
 var haizhouliu = (function () {
   function chunk(ary, size = 1) {
     let result = [];
@@ -38,16 +44,21 @@ var haizhouliu = (function () {
     }
     return result;
   }
-  // function differenceBy(array, values, iteratee) {
-  //   let ary = array.map((it) => iteratee(it));
-  //   let val = values.map((it) => iteratee(it));
-  //   let nums = difference(ary, val);
-  //   let result = [];
-  //   for (let i = 0; i < nums.length; i++) {
-  //     result.push(array[ary.indexOf(nums[i])]);
-  //   }
-  //   return result;
-  // }
+  function differenceBy(array, ...values) {
+    let iter = values[values.length - 1];
+    values.length = values.length - 1;
+    let predicate = iteratee(iter);
+    let ary = array.map((it) => predicate(it, iter));
+    let result = [];
+    values.forEach((it) => result.push(it.map((it) => predicate(it, iter))));
+    result = flatten(result);
+    let nums = difference(ary, result);
+    let n = [];
+    for (let i = 0; i < nums.length; i++) {
+      n.push(array[ary.indexOf(nums[i])]);
+    }
+    return n;
+  }
   function drop(array, n = 1) {
     return array.slice(n);
   }
@@ -233,12 +244,229 @@ var haizhouliu = (function () {
     }
     return left;
   }
+  function sortedLastIndex(array, value) {
+    let len = array.length;
+    for (let i = len - 1; i >= 0; i--) {
+      if (value >= array[i]) {
+        return i + 1;
+      }
+    }
+    return 0;
+  }
+  function sortedUniq(array) {
+    let result = [];
+    for (let i = 0; i < array.length; i++) {
+      result.push(array[i]);
+      while (array[i + 1] == array[i]) {
+        i++;
+      }
+    }
+    return result;
+  }
+  function tail(array) {
+    return array.slice(1);
+  }
+  function take(array, n = 1) {
+    return array.slice(0, n);
+  }
+  function takeRight(array, n = 1) {
+    if (n > array.length) {
+      return array;
+    }
+    return array.slice(array.length - n);
+  }
+  function union(array) {
+    return uniq(flatten(arguments));
+  }
+  function uniq(array) {
+    let result = [];
+    array.forEach((it) => {
+      if (!result.includes(it)) {
+        result.push(it);
+      }
+    });
+    return result;
+  }
+  function isArguments(value) {
+    return checkType(value, "Arguments");
+  }
+  function isArray(value) {
+    return checkType(value, "Array");
+  }
+  function isArrayBuffer(value) {
+    return checkType(value, "ArrayBuffer");
+  }
+  function isArrayLike(value) {
+    if (!value) {
+      return false;
+    }
+    if (
+      value.length &&
+      Object.prototype.toString.call(value) !== "[object Function]"
+    ) {
+      return true;
+    }
+    return false;
+  }
+  function isArrayLikeObject(value) {
+    if (typeof value == "object") {
+      return isArrayLike(value);
+    }
+    return false;
+  }
+  function isBoolean(value) {
+    return checkType(value, "Boolean");
+  }
+  function isDate(value) {
+    return checkType(value, "Date");
+  }
+  function isElement(value) {
+    return Object.prototype.toString.call(value).slice(-8, -1) == "Element";
+  }
+  function isEmpty(value) {
+    if (isMap(value) || isSet(value)) {
+      return value.size == 0;
+    }
+    // 判断null undefined
+    if (typeof value == "object" && value) {
+      return Object.keys(value) == 0;
+    }
+    return true;
+  }
+  function isEqual(value, other) {
+    if (value === other) {
+      return true;
+    }
+    if (
+      Object.prototype.toString.call(value) !==
+      Object.prototype.toString.call(other)
+    ) {
+      return false;
+    }
+    if (typeof value !== "object") {
+      return false;
+    }
+    let ary = Object.keys(value);
+    if (ary.length !== Object.keys(other).length) {
+      return false;
+    }
+    for (let key in other) {
+      if (!ary.includes(key) || !isEqual(value[key], other[key])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  function isError(value) {
+    return checkType(value, "Error");
+  }
+  function isFinite(value) {
+    return isNumber(value) && value !== Infinity && value !== -Infinity;
+  }
+  function isFunction(value) {
+    return checkType(value, "Function");
+  }
+  function isInteger(value) {
+    return isFinite(value) && Math.floor(value) === value;
+  }
+  function isMap(value) {
+    return checkType(value, "Map");
+  }
+  function isMatch(object, source) {}
+  function isNaN(value) {
+    if (typeof value == "object") {
+      return value.valueOf() !== value.valueOf();
+    }
+    return Number.isNaN(value);
+  }
+  function isSet(value) {
+    return checkType(value, "Set");
+  }
+  function isNull(value) {
+    return checkType(value, "Null");
+  }
+  function isNumber(value) {
+    return typeof value == "number";
+  }
+  function isObject(value) {
+    if (!value) {
+      return false;
+    }
+    if (typeof value == "function") {
+      return true;
+    }
+    return typeof value == "object";
+  }
+  function isObjectLike(value) {
+    if (!value) {
+      return false;
+    }
+    return typeof value == "object";
+  }
+  function isRegExp(value) {
+    return checkType(value, "RegExp");
+  }
+  function isString(value) {
+    return checkType(value, "String");
+  }
+  function isUndefined(value) {
+    return checkType(value, "Undefined");
+  }
+  /**
+   * @description: 判断 value类型 是否和 type 相等
+   * @param {string} value
+   * @param {string} type
+   * @return {boolean} true or false
+   */
+  function checkType(value, type) {
+    return Object.prototype.toString.call(value) === `[object ${type}]`;
+  }
+  function identity(value) {
+    return value;
+  }
+  function iteratee(func = identity) {
+    if (isFunction(func)) {
+      return func;
+    }
+    if (isString(func)) {
+      return function (obj, func) {
+        return obj[func];
+      };
+    }
+  }
+  function property(path) {
+    if (isString(path)) {
+      path = toPath(path);
+    }
+    return (obj) =>
+      path.reduce((prev, next) => {
+        return (prev = prev[next]);
+      }, obj);
+  }
+  function toPath(path) {
+    return path.match(/\w+/g);
+  }
+  /**
+   * @description: 对象里的每个值传入iter函数运行，得到的值组成一个数组
+   * @param {*} collection  对象
+   * @param {*} iter  函数
+   * @return {*}  返回一个数组
+   */
+  function map(collection, iter = identity) {
+    let predicate = iteratee(iter);
+    let result = [];
+    for (let key in collection) {
+      result.push(predicate(collection[key]));
+    }
+    return result;
+  }
+
   return {
     compact,
     chunk,
     concat,
     difference,
-    // differenceBy,
+    differenceBy,
     drop,
     dropRight,
     fill,
@@ -261,5 +489,42 @@ var haizhouliu = (function () {
     reverse,
     sortedIndex,
     sortedIndexOf,
+    sortedLastIndex,
+    sortedUniq,
+    tail,
+    take,
+    takeRight,
+    union,
+    uniq,
+    isArguments,
+    isArray,
+    isArrayBuffer,
+    isArrayLike,
+    isArrayLikeObject,
+    isBoolean,
+    isDate,
+    isElement,
+    isEmpty,
+    isEqual,
+    isError,
+    isFinite,
+    isFunction,
+    isInteger,
+    isMap,
+    isNaN,
+    isMatch,
+    isSet,
+    isNull,
+    isNumber,
+    isObject,
+    isObjectLike,
+    isRegExp,
+    isString,
+    isUndefined,
+    identity,
+    iteratee,
+    toPath,
+    map,
+    property,
   };
 })();
