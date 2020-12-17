@@ -2,7 +2,7 @@
  * @Description: lodash部分函数实现
  * @Author: xxx
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-17 12:16:56
+ * @LastEditTime: 2020-12-17 22:30:45
  */
 var haizhouliu = (function () {
   function chunk(ary, size = 1) {
@@ -76,6 +76,26 @@ var haizhouliu = (function () {
       return [];
     }
     return array.slice(0, array.length - n);
+  }
+  function dropRightWhile(array, predicate = identity) {
+    let pred = iteratee(predicate);
+    for (let i = array.length - 1; i >= 0; i--) {
+      if (!pred(array[i], predicate)) {
+        return array.slice(0, i + 1);
+      }
+    }
+  }
+  function matches(item) {
+    return (value) => isEqual(value, item);
+  }
+  function matchesProperty(path, srcValue) {
+    if (isArray(path)) {
+      srcValue = path[1];
+      path = path[0];
+    }
+    return (obj) => {
+      return obj[path] == srcValue;
+    };
   }
   function fill(array, value, start = 0, end = array.length) {
     for (let i = start; i < end; i++) {
@@ -442,6 +462,12 @@ var haizhouliu = (function () {
         return obj[func];
       };
     }
+    if (Object.prototype.toString.call(func) == "[object Object]") {
+      return (value, func) => isEqual(value, func);
+    }
+    if (isArray(func)) {
+      return (value, func) => value[func[0]] == func[1];
+    }
   }
   function property(path) {
     if (isString(path)) {
@@ -484,6 +510,7 @@ var haizhouliu = (function () {
     differenceWith,
     drop,
     dropRight,
+    dropRightWhile,
     fill,
     flatten,
     flattenDeep,
@@ -541,5 +568,7 @@ var haizhouliu = (function () {
     toPath,
     map,
     property,
+    matches,
+    matchesProperty,
   };
 })();
