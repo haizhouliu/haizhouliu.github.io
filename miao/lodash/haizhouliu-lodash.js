@@ -2,7 +2,7 @@
  * @Description: lodash部分函数实现
  * @Author: xxx
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-16 22:36:37
+ * @LastEditTime: 2020-12-17 12:16:56
  */
 var haizhouliu = (function () {
   function chunk(ary, size = 1) {
@@ -46,8 +46,11 @@ var haizhouliu = (function () {
   }
   function differenceBy(array, ...values) {
     let iter = values[values.length - 1];
-    values.length = values.length - 1;
-    let predicate = iteratee(iter);
+    let predicate = (it) => it;
+    if (!isArray(iter)) {
+      values.pop();
+      predicate = iteratee(iter);
+    }
     let ary = array.map((it) => predicate(it, iter));
     let result = [];
     values.forEach((it) => result.push(it.map((it) => predicate(it, iter))));
@@ -58,6 +61,12 @@ var haizhouliu = (function () {
       n.push(array[ary.indexOf(nums[i])]);
     }
     return n;
+  }
+  function differenceWith(array, ...values) {
+    let comparator = values.pop();
+    return array.filter((item) =>
+      flatten(values).every((it) => comparator(it, item) == false)
+    );
   }
   function drop(array, n = 1) {
     return array.slice(n);
@@ -453,10 +462,15 @@ var haizhouliu = (function () {
    * @return {*}  返回一个数组
    */
   function map(collection, iter = identity) {
-    let predicate = iteratee(iter);
+    let predicate;
+    if (isString(iter)) {
+      predicate = property(iter);
+    } else {
+      predicate = iteratee(iter);
+    }
     let result = [];
     for (let key in collection) {
-      result.push(predicate(collection[key]));
+      result.push(predicate(collection[key], Number(key), collection));
     }
     return result;
   }
@@ -467,6 +481,7 @@ var haizhouliu = (function () {
     concat,
     difference,
     differenceBy,
+    differenceWith,
     drop,
     dropRight,
     fill,
