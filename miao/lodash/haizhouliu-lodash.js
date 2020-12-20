@@ -2,7 +2,7 @@
  * @Description: lodash部分函数实现
  * @Author: xxx
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-17 22:30:45
+ * @LastEditTime: 2020-12-20 22:42:32
  */
 var haizhouliu = (function () {
   function chunk(ary, size = 1) {
@@ -86,7 +86,8 @@ var haizhouliu = (function () {
     }
   }
   function matches(item) {
-    return (value) => isEqual(value, item);
+    return (value) => isMatch(value, item);
+    // return _.bind(isMatch, null, _ , item)
   }
   function matchesProperty(path, srcValue) {
     if (isArray(path)) {
@@ -375,12 +376,14 @@ var haizhouliu = (function () {
     if (typeof value !== "object") {
       return false;
     }
-    let ary = Object.keys(value);
-    if (ary.length !== Object.keys(other).length) {
+    if (Object.keys(value).length !== Object.keys(other).length) {
       return false;
     }
     for (let key in other) {
-      if (!ary.includes(key) || !isEqual(value[key], other[key])) {
+      if (
+        !Object.keys(value).includes(key) ||
+        !isEqual(value[key], other[key])
+      ) {
         return false;
       }
     }
@@ -401,7 +404,20 @@ var haizhouliu = (function () {
   function isMap(value) {
     return checkType(value, "Map");
   }
-  function isMatch(object, source) {}
+  function isMatch(object, source) {
+    for (let key in source) {
+      if (typeof key && typeof source[key] === "object") {
+        if (!isMatch(object[key], source[key])) {
+          return false;
+        }
+      } else {
+        if (object[key] !== source[key]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
   function isNaN(value) {
     if (typeof value == "object") {
       return value.valueOf() !== value.valueOf();
@@ -475,11 +491,33 @@ var haizhouliu = (function () {
     }
     return (obj) =>
       path.reduce((prev, next) => {
-        return (prev = prev[next]);
+        if (!(next in Object(prev))) {
+          return undefined;
+        }
+        return prev[next];
       }, obj);
   }
   function toPath(path) {
     return path.match(/\w+/g);
+  }
+  function get(object, path, defaultValue = "default") {
+    return property(path)(object) ? property(path)(object) : defaultValue;
+  }
+  function mapKeys(object, iter = identity) {
+    let predicate = iteratee(iter);
+    let map = {};
+    Object.keys(object).forEach(
+      (it) => (map[predicate(object[it], it)] = object[it])
+    );
+    return map;
+  }
+  function mapValues(object, iter = identity) {
+    let predicate = iteratee(iter);
+    let map = {};
+    Object.keys(object).forEach(
+      (it) => (map[it] = predicate(object[it], iter))
+    );
+    return map;
   }
   /**
    * @description: 对象里的每个值传入iter函数运行，得到的值组成一个数组
@@ -570,5 +608,8 @@ var haizhouliu = (function () {
     property,
     matches,
     matchesProperty,
+    mapValues,
+    mapKeys,
+    get,
   };
 })();
