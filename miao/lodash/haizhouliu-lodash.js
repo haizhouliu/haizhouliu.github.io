@@ -1,8 +1,16 @@
 /*
+ * @Author: your name
+ * @Date: 2020-12-08 15:04:25
+ * @LastEditTime: 2020-12-22 22:51:11
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
+ */
+/*
  * @Description: lodash部分函数实现
  * @Author: xxx
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-20 22:42:32
+ * @LastEditTime: 2020-12-22 21:16:20
  */
 var haizhouliu = (function () {
   function chunk(ary, size = 1) {
@@ -85,6 +93,15 @@ var haizhouliu = (function () {
       }
     }
   }
+  function dropWhile(ary, predicate = identity) {
+    let pred = iteratee(predicate);
+    for (let i = 0; i < ary.length; i++) {
+      if (!pred(ary[i])) {
+        return ary.slice(i);
+      }
+    }
+    return ary;
+  }
   function matches(item) {
     return (value) => isMatch(value, item);
     // return _.bind(isMatch, null, _ , item)
@@ -103,6 +120,28 @@ var haizhouliu = (function () {
       array[i] = value;
     }
     return array;
+  }
+  function findIndex(array, predicate = identity, fromIndex = 0) {
+    let pred = iteratee(predicate);
+    for (let i = fromIndex; i < array.length; i++) {
+      if (pred(array[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  function findLastIndex(
+    array,
+    predicate = identity,
+    fromIndex = array.length - 1
+  ) {
+    let pred = iteratee(predicate);
+    for (let i = fromIndex; i >= 0; i--) {
+      if (pred(array[i])) {
+        return i;
+      }
+    }
+    return -1;
   }
   function flatten(array) {
     let result = [];
@@ -156,15 +195,36 @@ var haizhouliu = (function () {
     return array.slice(0, array.length - 1);
   }
   function intersection(...arrays) {
-    if (arrays.length == 1) {
-      return arrays[0];
-    }
-    if (arrays.length !== 2) {
-      return [];
-    }
-    let firstArray = arrays[0];
-    let restArray = arrays[1];
-    return firstArray.filter((it) => restArray.includes(it) == true);
+    // if (arrays.length == 1) {
+    //   return arrays[0];
+    // }
+    // let firstArray = arrays[0];
+    // let restArray = arrays.slice(1);
+    // return firstArray.filter((it) =>
+    //   restArray.every((item) => item.includes(it) == true)
+    // );
+    return intersectionBy(...arrays, identity);
+  }
+  function intersectionBy(...values) {
+    let pred = iteratee(values.pop());
+    let transValues = values.map((it) => it.map((item) => pred(item)));
+    let firstArray = Array.from(new Set(transValues[0]));
+    let restArray = transValues.slice(1);
+    let idxAry = [];
+    firstArray.forEach((it, idx) => {
+      if (restArray.every((item) => item.includes(it))) {
+        idxAry.push(idx);
+      }
+    });
+    return idxAry.map((it) => values[0][it]);
+  }
+  function intersectionWith(...values) {
+    let pred = iteratee(values.pop());
+    let firstArray = values[0];
+    let restArray = values.slice(1);
+    return firstArray.filter((it) =>
+      restArray.every((item) => item.some((content) => pred(it, content)))
+    );
   }
   function join(array, separator = ",") {
     let str = "";
@@ -191,44 +251,67 @@ var haizhouliu = (function () {
     return array[n];
   }
   function pull(array, ...values) {
-    let array2 = array;
-    let nums = array;
-    for (let i = 0; i < values.length; i++) {
-      array2 = array2.filter((it) => it !== values[i]);
-    }
-    nums.length = 0;
-    nums.push(...array2);
-    return array2;
+    let predicate = function (item) {
+      return flatten(values).includes(item);
+    };
+    return remove2(array, predicate);
   }
   function pullAll(array, values) {
-    let array2 = array;
-    let nums = array;
-    for (let i = 0; i < values.length; i++) {
-      array2 = array2.filter((it) => it !== values[i]);
-    }
-    nums.length = 0;
-    nums.push(...array2);
-    return array2;
+    // return pullAllBy(array, values, identity);
+    return pull(array, values);
+  }
+  function pullAllBy(array, values, iter = identity) {
+    let pred = iteratee(iter);
+    let transVal = values.map((it) => pred(it));
+    return remove2(array, (item) => transVal.includes(pred(item)));
   }
   function pullAt(array, indexes = []) {
+    let transIndex = indexes.map((it) => array[it]);
+    let predicate = function (value) {
+      return transIndex.includes(value);
+    };
+    return remove(array, predicate);
+  }
+  function pullAllWith(array, values, comparator) {
+    let ary = array.slice();
+    let num = array;
+    num.length = 0;
+    num.push(
+      ...ary.filter((it) => values.every((item) => !comparator(it, item)))
+    );
+    return num;
+  }
+  /**
+   * @description: 移除数组中predicate(item)为true的元素，并返回由这些元素组成的新数组
+   * @param {*} array
+   * @param {*} predicate
+   * @return {*} 返回新数组
+   */
+  function remove(array, predicate) {
     let result = [];
-    let nums = array.slice();
-    let nums2 = array.slice();
-    let p = array;
-    p.length = 0;
-    for (let i = 0; i < nums2.length; i++) {
-      if (indexes.includes(i)) {
-        result.push(nums2.splice(i, 1)[0]);
-        nums2 = nums.slice();
-      } else {
-        p.push(nums2[i]);
+    for (let i = 0; i < array.length; i++) {
+      if (predicate(array[i])) {
+        result.push(array[i]);
+        array.splice(i, 1);
+        i--;
       }
     }
     return result;
   }
-  function remove(array, predicate) {
-    let result = array.filter((it) => predicate(it) == true);
-    return result;
+  /**
+   * @description: 移除数组中predicate(item)为true的元素，返回移除后的数组
+   * @param {*} array
+   * @param {*} predicate
+   * @return {*} 返回移除后的数组
+   */
+  function remove2(array, predicate) {
+    for (let i = 0; i < array.length; i++) {
+      if (predicate(array[i])) {
+        array.splice(i, 1);
+        i--;
+      }
+    }
+    return array;
   }
   function reverse(array) {
     let len = Math.floor(array.length / 2);
@@ -258,6 +341,11 @@ var haizhouliu = (function () {
     }
     return left;
   }
+  function sortedIndexBy(array, value, iter = identity) {
+    let pred = iteratee(iter);
+    let transArray = array.map((it) => pred(it));
+    return sortedIndex(transArray, pred(value));
+  }
   function sortedIndexOf(array, value) {
     if (value > array[array.length - 1] || value < array[0]) {
       return -1;
@@ -283,15 +371,37 @@ var haizhouliu = (function () {
     }
     return 0;
   }
-  function sortedUniq(array) {
+  function sortedLastIndexBy(array, value, iter = identity) {
+    let pred = iteratee(iter);
+    let transArray = array.map((it) => pred(it));
+    return sortedLastIndex(transArray, pred(value));
+  }
+  function sortedLastIndexOf(array, value) {
+    for (let i = array.length - 1; i >= 0; i--) {
+      if (value === array[i]) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  function sortedUniq(array, idxAry = []) {
     let result = [];
     for (let i = 0; i < array.length; i++) {
       result.push(array[i]);
+      idxAry.push(i);
       while (array[i + 1] == array[i]) {
         i++;
       }
     }
     return result;
+  }
+  function sortedUniqBy(array, iter) {
+    let idxAry = [];
+    sortedUniq(
+      array.map((it) => iter(it)),
+      idxAry
+    );
+    return idxAry.map((it) => array[it]);
   }
   function tail(array) {
     return array.slice(1);
@@ -474,15 +584,15 @@ var haizhouliu = (function () {
       return func;
     }
     if (isString(func)) {
-      return function (obj, func) {
+      return function (obj) {
         return obj[func];
       };
     }
     if (Object.prototype.toString.call(func) == "[object Object]") {
-      return (value, func) => isEqual(value, func);
+      return (value) => isEqual(value, func);
     }
     if (isArray(func)) {
-      return (value, func) => value[func[0]] == func[1];
+      return (value) => value[func[0]] == func[1];
     }
   }
   function property(path) {
@@ -519,6 +629,28 @@ var haizhouliu = (function () {
     );
     return map;
   }
+  function before(n, func) {
+    let count = 0;
+    let result;
+    return function (...args) {
+      if (count < n) {
+        count++;
+        return (result = func.call(this, ...args));
+      } else {
+        return result;
+      }
+    };
+  }
+  function negate(predicate) {
+    return function (...args) {
+      return !predicate(...args);
+    };
+  }
+  function flip(func) {
+    return function (...args) {
+      return func(...args.reverse());
+    };
+  }
   /**
    * @description: 对象里的每个值传入iter函数运行，得到的值组成一个数组
    * @param {*} collection  对象
@@ -549,7 +681,10 @@ var haizhouliu = (function () {
     drop,
     dropRight,
     dropRightWhile,
+    dropWhile,
     fill,
+    findIndex,
+    findLastIndex,
     flatten,
     flattenDeep,
     flattenDepth,
@@ -558,19 +693,28 @@ var haizhouliu = (function () {
     indexOf,
     initial,
     intersection,
+    intersectionBy,
+    intersectionWith,
     join,
     last,
     lastIndexOf,
     nth,
     pull,
     pullAll,
+    pullAllBy,
     pullAt,
+    pullAllWith,
     remove,
+    remove2,
     reverse,
     sortedIndex,
+    sortedIndexBy,
     sortedIndexOf,
     sortedLastIndex,
+    sortedLastIndexBy,
+    sortedLastIndexOf,
     sortedUniq,
+    sortedUniqBy,
     tail,
     take,
     takeRight,
@@ -610,6 +754,8 @@ var haizhouliu = (function () {
     matchesProperty,
     mapValues,
     mapKeys,
+    before,
+    flip,
     get,
   };
 })();
