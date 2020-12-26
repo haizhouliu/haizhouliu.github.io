@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-22 22:51:11
+ * @LastEditTime: 2020-12-26 22:49:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -273,13 +273,8 @@ var haizhouliu = (function () {
     return remove(array, predicate);
   }
   function pullAllWith(array, values, comparator) {
-    let ary = array.slice();
-    let num = array;
-    num.length = 0;
-    num.push(
-      ...ary.filter((it) => values.every((item) => !comparator(it, item)))
-    );
-    return num;
+    let pred = (val) => values.some((item) => comparator(item, val));
+    return remove2(array, pred);
   }
   /**
    * @description: 移除数组中predicate(item)为true的元素，并返回由这些元素组成的新数组
@@ -415,14 +410,41 @@ var haizhouliu = (function () {
     }
     return array.slice(array.length - n);
   }
-  function union(array) {
-    return uniq(flatten(arguments));
+  function takeRightWhile(array, predicate = identity) {
+    let pred = iteratee(predicate);
+    for (let i = array.length - 1; i >= 0; i--) {
+      if (!pred(array[i])) {
+        return array.slice(i + 1);
+      }
+    }
+    return array;
   }
-  function uniq(array) {
+  function takeWhile(array, predicate = identity) {
+    let pred = iteratee(predicate);
+    for (let i = 0; i < array.length; i++) {
+      if (!pred(array[i])) {
+        return array.slice(0, i);
+      }
+    }
+    return array;
+  }
+  function union(...values) {
+    return uniq(flatten(...values));
+  }
+  function unionBy(...values) {
+    let pred = iteratee(values.pop());
+    let transVal = values.map((it) => it.map((item) => pred(item)));
+    let idxAry = [];
+    uniq(flattenDeep(transVal), idxAry);
+    let flatValues = flattenDeep(values);
+    return idxAry.map((it) => flatValues[it]);
+  }
+  function uniq(array, idxAry = []) {
     let result = [];
-    array.forEach((it) => {
+    array.forEach((it, idx) => {
       if (!result.includes(it)) {
         result.push(it);
+        idxAry.push(idx);
       }
     });
     return result;
@@ -719,7 +741,10 @@ var haizhouliu = (function () {
     take,
     takeRight,
     union,
+    unionBy,
     uniq,
+    takeRightWhile,
+    takeWhile,
     isArguments,
     isArray,
     isArrayBuffer,
