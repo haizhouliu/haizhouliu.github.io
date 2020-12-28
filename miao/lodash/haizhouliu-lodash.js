@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-28 11:43:06
+ * @LastEditTime: 2020-12-28 22:40:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -440,6 +440,17 @@ var haizhouliu = (function () {
     let flatValues = flattenDeep(values);
     return idxAry.map((it) => flatValues[it]);
   }
+  function unionWith(...values) {
+    let pred = iteratee(values.pop());
+    let result = [];
+    let flatVal = flatten(values);
+    flatVal.forEach((it) => {
+      if (result.every((item) => pred(item, it) == false)) {
+        result.push(it);
+      }
+    });
+    return result;
+  }
   function uniq(array, idxAry = []) {
     let result = [];
     array.forEach((it, idx) => {
@@ -449,6 +460,59 @@ var haizhouliu = (function () {
       }
     });
     return result;
+  }
+  function uniqBy(array, iter = identity) {
+    let pred = iteratee(iter);
+    let transAry = array.map((it) => pred(it));
+    let idxAry = [];
+    uniq(transAry, idxAry);
+    return idxAry.map((it) => array[it]);
+  }
+  function uniqWith(array, comparator) {
+    return unionWith(array, comparator);
+  }
+  function unzip(array) {
+    return zip(...array);
+  }
+  function unzipWith(array, iter = identity) {
+    let pred = iteratee(iter);
+    let maxL = Math.max(...Array.from(new Set(array.map((it) => it.length))));
+    let result = [];
+    for (let i = 0; i < maxL; i++) {
+      result.push(pred(array[0][i], array[1][i]));
+    }
+    return result;
+  }
+  function zip(...values) {
+    let result = [];
+    let maxL = Math.max(...Array.from(new Set(values.map((it) => it.length))));
+    for (let i = 0; i < maxL; i++) {
+      result.push(values.reduce((a, b) => (a = a.concat(b[i])), []));
+    }
+    return result;
+  }
+  function without(array, ...values) {
+    let result = [];
+    array.forEach((it) => {
+      if (!values.includes(it)) {
+        result.push(it);
+      }
+    });
+    return result;
+  }
+  function xor(...values) {
+    let obj = {};
+    let flatVal = flatten(values);
+    for (let i = 0; i < flatVal.length; i++) {
+      if (flatVal[i] in obj) {
+        obj[flatVal[i]] = false;
+      } else {
+        obj[flatVal[i]] = true;
+      }
+    }
+    return Object.keys(obj)
+      .filter((it) => obj[it])
+      .map((it) => Number(it));
   }
   function isArguments(value) {
     return checkType(value, "Arguments");
@@ -589,6 +653,15 @@ var haizhouliu = (function () {
   }
   function isUndefined(value) {
     return checkType(value, "Undefined");
+  }
+  function add(a, b) {
+    if (isUndefined(a) || isArray(a)) {
+      a = 0;
+    }
+    if (isUndefined(b) || isArray(b)) {
+      b = 0;
+    }
+    return a + b;
   }
   /**
    * @description: 判断 value类型 是否和 type 相等
@@ -743,9 +816,17 @@ var haizhouliu = (function () {
     takeRight,
     union,
     unionBy,
+    unionWith,
     uniq,
+    uniqBy,
+    uniqWith,
+    unzip,
+    unzipWith,
+    zip,
+    without,
     takeRightWhile,
     takeWhile,
+    xor,
     isArguments,
     isArray,
     isArrayBuffer,
@@ -771,6 +852,7 @@ var haizhouliu = (function () {
     isRegExp,
     isString,
     isUndefined,
+    add,
     identity,
     iteratee,
     toPath,
