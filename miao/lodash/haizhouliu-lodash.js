@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-26 22:49:35
+ * @LastEditTime: 2020-12-28 11:43:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -429,7 +429,8 @@ var haizhouliu = (function () {
     return array;
   }
   function union(...values) {
-    return uniq(flatten(...values));
+    let result = values.reduce((a, b) => (a = a.concat(b)), []);
+    return uniq(result);
   }
   function unionBy(...values) {
     let pred = iteratee(values.pop());
