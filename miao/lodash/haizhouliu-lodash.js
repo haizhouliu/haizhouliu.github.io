@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-28 22:40:31
+ * @LastEditTime: 2020-12-30 22:18:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -483,14 +483,6 @@ var haizhouliu = (function () {
     }
     return result;
   }
-  function zip(...values) {
-    let result = [];
-    let maxL = Math.max(...Array.from(new Set(values.map((it) => it.length))));
-    for (let i = 0; i < maxL; i++) {
-      result.push(values.reduce((a, b) => (a = a.concat(b[i])), []));
-    }
-    return result;
-  }
   function without(array, ...values) {
     let result = [];
     array.forEach((it) => {
@@ -501,18 +493,221 @@ var haizhouliu = (function () {
     return result;
   }
   function xor(...values) {
-    let obj = {};
+    return xorBy(...values, identity);
+  }
+  function xorBy(...values) {
+    let pred = iteratee(values.pop());
+    let obj = new Map();
     let flatVal = flatten(values);
-    for (let i = 0; i < flatVal.length; i++) {
-      if (flatVal[i] in obj) {
-        obj[flatVal[i]] = false;
+    let result = [];
+    flatVal.forEach((it) => {
+      let item = pred(it);
+      if (obj.has(item)) {
+        obj.set(item, false);
       } else {
-        obj[flatVal[i]] = true;
+        obj.set(item, true);
+      }
+    });
+    flatVal.forEach((it) => {
+      let item = pred(it);
+      if (obj.get(item)) {
+        result.push(it);
+      }
+    });
+    return result;
+  }
+  function xorWith(...values) {
+    let pred = iteratee(values.pop());
+    let flatVal = flatten(values);
+    let result = [];
+    flatVal.forEach((it) => {
+      let len = flatVal.filter((item) => pred(it, item)).length;
+      if (len === 1) {
+        result.push(it);
+      }
+    });
+    return result;
+  }
+  function zip(...values) {
+    let result = [];
+    let maxL = Math.max(...Array.from(new Set(values.map((it) => it.length))));
+    for (let i = 0; i < maxL; i++) {
+      result.push(values.reduce((a, b) => (a = a.concat(b[i])), []));
+    }
+    return result;
+  }
+  function zipObject(props = [], values = []) {
+    let obj = {};
+    props.forEach((it, idx) => (obj[it] = values[idx]));
+    return obj;
+  }
+  function zipObjectDeep(props = [], values = []) {
+    let obj = {};
+    let result = [];
+    function aryToObj(ary, val, obj, result) {
+      if (ary.length == 0) {
+        return val;
+      }
+      let value = ary.shift();
+      if (value == Number(value)) {
+        result[value] = aryToObj(ary, val, {}, result);
+        return result;
+      }
+      obj[value] = aryToObj(ary, val, {}, result);
+      return obj;
+    }
+    return props.reduce(
+      (a, b, idx) => (a = aryToObj(toPath(b), values[idx], obj, result)),
+      obj
+    );
+  }
+  function zipWith(...values) {
+    let pred = iteratee(values.pop());
+    let result = [];
+    let maxL = Math.max(...Array.from(new Set(values.map((it) => it.length))));
+    for (let i = 0; i < maxL; i++) {
+      let val = values.map((it) => it[i]);
+      result.push(pred(...val));
+    }
+    return result;
+  }
+  function countBy(values, iter = identity) {
+    let pred = iteratee(iter);
+    let mapVal = values.map((it) => pred(it));
+    let obj = {};
+    mapVal.forEach((it) => {
+      if (it in obj) {
+        obj[it]++;
+      } else {
+        obj[it] = 1;
+      }
+    });
+    return obj;
+  }
+  function every(value, predicate = identity) {
+    let pred = iteratee(predicate);
+    for (let i = 0; i < value.length; i++) {
+      if (!pred(value[i])) {
+        return false;
       }
     }
-    return Object.keys(obj)
-      .filter((it) => obj[it])
-      .map((it) => Number(it));
+    return true;
+  }
+  function filter(value, predicate = identity) {
+    let result = [];
+    let pred = iteratee(predicate);
+    for (let i = 0; i < value.length; i++) {
+      if (pred(value[i])) {
+        result.push(value[i]);
+      }
+    }
+    return result;
+  }
+  function find(value, predicate = identity, fromIndex = 0) {
+    let pred = iteratee(predicate);
+    for (let i = fromIndex; i < value.length; i++) {
+      if (pred(value[i])) {
+        return value[i];
+      }
+    }
+    return undefined;
+  }
+  function findLast(value, predicate = identity, fromIndex = value.length - 1) {
+    let pred = iteratee(predicate);
+    for (let i = fromIndex; i >= 0; i--) {
+      if (pred(value[i])) {
+        return value[i];
+      }
+    }
+    return undefined;
+  }
+  function flatMap(value, iter = identity) {
+    return flatMapDeep(value, iter);
+  }
+  function flatMapDeep(value, iter = identity) {
+    let pred = iteratee(iter);
+    let result = [];
+    value.forEach((it) => {
+      result.push(...flattenDeep(pred(it)));
+    });
+    return result;
+  }
+  function flatMapDepth(value, iter = identity, depth = 1) {
+    let pred = iteratee(iter);
+    let result = [];
+    value.forEach((it) => {
+      result.push(flattenDepth(pred(it), depth));
+    });
+    return result;
+  }
+  function forEach(value, iter = identity) {
+    let pred = iteratee(iter);
+    for (let key in value) {
+      pred(value[key], key, value);
+    }
+    return value;
+  }
+  function forEachRight(value, iter = identity) {
+    let pred = iteratee(iter);
+    let keysVal = Object.keys(value).reverse();
+    for (let key in keysVal) {
+      pred(value[keysVal[key]], keysVal[key], value);
+    }
+    return value;
+  }
+  function groupBy(value, iter = identity) {
+    let pred = iteratee(iter);
+    let mapVal = Array.from(new Set(value.map((it) => pred(it)))).sort(
+      (a, b) => a - b
+    );
+    let obj = {};
+    mapVal.forEach((it) => {
+      obj[it] = value.filter((item) => pred(item) == it);
+    });
+    return obj;
+  }
+  function includes(collection, value, fromIndex = 0) {
+    if (isString(collection)) {
+      return collection.includes(value);
+    }
+    let collectVal = Object.values(collection);
+    if (value !== value) {
+      for (let i = fromIndex; i < collectVal.length; i++) {
+        if (collectVal[i] !== collectVal[i]) {
+          return true;
+        }
+      }
+      return false;
+    }
+    for (let i = fromIndex; i < collectVal.length; i++) {
+      if (collectVal[i] === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function invokeMap(collection, path, ...args) {
+    if (isString(path)) {
+      return collection.map((it) => it[path](...args));
+    }
+    if (isFunction(path)) {
+      return collection.map((it) => path.call(it, ...args));
+    }
+  }
+  function keyBy(collection, iter = identity) {
+    let pred = iteratee(iter);
+    let obj = {};
+    collection.forEach((it) => (obj[pred(it)] = it));
+    return obj;
+  }
+  function map(collection, iter = identity) {
+    let pred = iteratee(iter);
+    let result = [];
+    let value = Object.values(collection);
+    for (let i = 0; i < value.length; i++) {
+      result.push(pred(value[i]));
+    }
+    return result;
   }
   function isArguments(value) {
     return checkType(value, "Arguments");
@@ -645,6 +840,9 @@ var haizhouliu = (function () {
     }
     return typeof value == "object";
   }
+  function isPlainObject(value) {
+    return value.__proto__ === Object.prototype || value.__proto__ == null;
+  }
   function isRegExp(value) {
     return checkType(value, "RegExp");
   }
@@ -685,7 +883,7 @@ var haizhouliu = (function () {
       };
     }
     if (Object.prototype.toString.call(func) == "[object Object]") {
-      return (value) => isEqual(value, func);
+      return (value) => isMatch(value, func);
     }
     if (isArray(func)) {
       return (value) => value[func[0]] == func[1];
@@ -827,6 +1025,26 @@ var haizhouliu = (function () {
     takeRightWhile,
     takeWhile,
     xor,
+    xorBy,
+    xorWith,
+    zipObject,
+    zipObjectDeep,
+    zipWith,
+    countBy,
+    every,
+    filter,
+    find,
+    findLast,
+    flatMap,
+    flatMapDeep,
+    flatMapDepth,
+    forEach,
+    forEachRight,
+    groupBy,
+    includes,
+    invokeMap,
+    keyBy,
+    map,
     isArguments,
     isArray,
     isArrayBuffer,
@@ -849,6 +1067,7 @@ var haizhouliu = (function () {
     isNumber,
     isObject,
     isObjectLike,
+    isPlainObject,
     isRegExp,
     isString,
     isUndefined,
