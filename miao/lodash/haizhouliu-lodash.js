@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2020-12-30 22:18:03
+ * @LastEditTime: 2021-01-03 21:15:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -709,6 +709,133 @@ var haizhouliu = (function () {
     }
     return result;
   }
+  function partition(collection, predicate = identity) {
+    let pred = iteratee(predicate);
+    let result = [];
+    let trueAry = [];
+    let falseAry = [];
+    collection.forEach((it) => {
+      if (pred(it)) {
+        trueAry.push(it);
+      } else {
+        falseAry.push(it);
+      }
+    });
+    result.push(trueAry, falseAry);
+    return result;
+  }
+  function reduce(collection, iter = identity, accumulator) {
+    let pred = iteratee(iter);
+    let valueAry = Object.values(collection);
+    let keyAry = Object.keys(collection);
+    for (let i = 0; i < valueAry.length; i++) {
+      accumulator = pred(accumulator, valueAry[i], keyAry[i]);
+    }
+    return accumulator;
+  }
+  function reduceRight(collection, iter = identity, accumulator) {
+    let pred = iteratee(iter);
+    return reduce(collection.reverse(), pred, accumulator);
+  }
+  function reject(collection, predicate = identity) {
+    let pred = iteratee(predicate);
+    let result = [];
+    collection.forEach((it) => {
+      if (!pred(it)) {
+        result.push(it);
+      }
+    });
+    return result;
+  }
+  function sample(collection) {
+    return collection[(Math.random() * collection.length) | 0];
+  }
+  function sampleSize(collection, n = 1) {
+    if (n === 1) {
+      return sample(collection);
+    }
+    if (n >= collection.length) {
+      return collection;
+    }
+    let result = [];
+    while (result.length !== n) {
+      let random = (Math.random() * collection.length) | 0;
+      if (!result.includes(random)) {
+        result.push(random);
+      }
+    }
+    return result.map((it) => collection[it]);
+  }
+  function shuffle(collection) {
+    for (let i = collection.length - 1; i >= 0; i--) {
+      let random = (Math.random() * (i + 1)) | 0;
+      let randomValue = collection[random];
+      let itemValue = collection[i];
+      collection[i] = randomValue;
+      collection[random] = itemValue;
+    }
+    return collection;
+  }
+  function size(collection) {
+    if (isArrayLike(collection)) {
+      return collection.length;
+    }
+    if (isPlainObject(collection)) {
+      return Object.keys(collection).length;
+    }
+    return 0;
+  }
+  function some(collection, predicate = identity) {
+    let pred = iteratee(predicate);
+    for (let i = 0; i < collection.length; i++) {
+      if (pred(collection[i], i, collection)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function defer(func, ...args) {
+    return setTimeout(() => {
+      func(...args);
+    });
+  }
+
+  function delay(func, wait, ...args) {
+    return setTimeout(() => {
+      func(...args);
+    }, wait);
+  }
+  function castArray(value) {
+    if (arguments.length === 0) {
+      return [];
+    }
+    if (!isArray(value)) {
+      return [value];
+    }
+    return value;
+  }
+  function conformsTo(object, source) {
+    let srcKeys = Object.keys(source);
+    return srcKeys.every((it) => {
+      if (source[it](object[it]) && object[it] !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+  function eq(value, other) {
+    if (Number.isNaN(value) && Number.isNaN(other)) {
+      return true;
+    }
+    return value === other;
+  }
+  function gt(value, other) {
+    return value > other;
+  }
+  function gte(value, other) {
+    return value >= other;
+  }
   function isArguments(value) {
     return checkType(value, "Arguments");
   }
@@ -793,6 +920,9 @@ var haizhouliu = (function () {
   function isInteger(value) {
     return isFinite(value) && Math.floor(value) === value;
   }
+  function isLength(value) {
+    return isInteger(value) && value >= 0;
+  }
   function isMap(value) {
     return checkType(value, "Map");
   }
@@ -816,8 +946,11 @@ var haizhouliu = (function () {
     }
     return Number.isNaN(value);
   }
-  function isSet(value) {
-    return checkType(value, "Set");
+  function isNative(value) {
+    return value.toString().includes("[native code]");
+  }
+  function isNill(value) {
+    return value === null || value === undefined;
   }
   function isNull(value) {
     return checkType(value, "Null");
@@ -846,11 +979,118 @@ var haizhouliu = (function () {
   function isRegExp(value) {
     return checkType(value, "RegExp");
   }
+  function isSet(value) {
+    return checkType(value, "Set");
+  }
   function isString(value) {
     return checkType(value, "String");
   }
   function isUndefined(value) {
     return checkType(value, "Undefined");
+  }
+  function isSymbol(value) {
+    return checkType(value, "Symbol");
+  }
+  function isWeakMap(value) {
+    return checkType(value, "WeakMap");
+  }
+  function isWeakSet(value) {
+    return checkType(value, "WeakSet");
+  }
+  function lt(value, other) {
+    return value < other;
+  }
+  function lte(value, other) {
+    return value <= other;
+  }
+  function toArray(value) {
+    if (typeof value === "object" && value) {
+      return Object.values(value);
+    }
+    if (isString(value)) {
+      return value.split("");
+    }
+    return [];
+  }
+  function toNumber(value) {
+    return Number(value);
+  }
+  function ceil(value, p = 0) {
+    return Math.ceil(value * 10 ** p) / 10 ** p;
+  }
+  function divide(dividend, divisor) {
+    return dividend / divisor;
+  }
+  function floor(number, p = 0) {
+    return Math.floor(number * 10 ** p) / 10 ** p;
+  }
+  function max(array) {
+    if (isArray(array) && array.length !== 0) {
+      return Math.max(...array);
+    }
+    return undefined;
+  }
+  function maxBy(array, iter = identity) {
+    let pred = iteratee(iter);
+    let item;
+    let res = -Infinity;
+    array.forEach((it) => {
+      if (res < pred(it)) {
+        res = pred(it);
+        item = it;
+      }
+    });
+    return item;
+  }
+  function mean(array) {
+    return array.reduce((a, b) => a + b) / array.length;
+  }
+  function meanBy(array, iter = identity) {
+    let pred = iteratee(iter);
+    return mean(array.map((it) => pred(it)));
+  }
+  function min(array) {
+    if (isArray(array) && array.length !== 0) {
+      return Math.min(...array);
+    }
+    return undefined;
+  }
+  function minBy(array, iter = identity) {
+    let pred = iteratee(iter);
+    let item;
+    let res = Infinity;
+    array.forEach((it) => {
+      if (res > pred(it)) {
+        res = pred(it);
+        item = it;
+      }
+    });
+    return item;
+  }
+  function multiply(multiplier, multiplicand) {
+    return multiplier * multiplicand;
+  }
+  function subtract(minuend, subtrahend) {
+    return minuend - subtrahend;
+  }
+  function round(number, p) {
+    return Math.round(number * 10 ** p) / 10 ** p;
+  }
+  function sum(array) {
+    return array.reduce((a, b) => a + b);
+  }
+  function sumBy(array, iter = iteratee) {
+    let pred = iteratee(iter);
+    return sum(array.map((it) => pred(it)));
+  }
+  function clamp(number, lower, upper) {
+    if (number <= lower) {
+      return lower;
+    } else if (number >= upper) {
+      return upper;
+    } else {
+      return number;
+    }
   }
   function add(a, b) {
     if (isUndefined(a) || isArray(a)) {
@@ -1045,6 +1285,22 @@ var haizhouliu = (function () {
     invokeMap,
     keyBy,
     map,
+    partition,
+    reduce,
+    reduceRight,
+    reject,
+    sample,
+    sampleSize,
+    shuffle,
+    size,
+    some,
+    defer,
+    delay,
+    castArray,
+    conformsTo,
+    eq,
+    gt,
+    gte,
     isArguments,
     isArray,
     isArrayBuffer,
@@ -1059,9 +1315,12 @@ var haizhouliu = (function () {
     isFinite,
     isFunction,
     isInteger,
+    isLength,
     isMap,
     isNaN,
     isMatch,
+    isNative,
+    isNill,
     isSet,
     isNull,
     isNumber,
@@ -1071,6 +1330,27 @@ var haizhouliu = (function () {
     isRegExp,
     isString,
     isUndefined,
+    isSymbol,
+    isWeakMap,
+    isWeakSet,
+    lt,
+    lte,
+    toArray,
+    toNumber,
+    ceil,
+    divide,
+    floor,
+    max,
+    maxBy,
+    meanBy,
+    min,
+    minBy,
+    multiply,
+    round,
+    subtract,
+    sum,
+    sumBy,
+    clamp,
     add,
     identity,
     iteratee,
