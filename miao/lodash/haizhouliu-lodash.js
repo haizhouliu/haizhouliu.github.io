@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2021-01-03 21:15:38
+ * @LastEditTime: 2021-01-04 10:00:42
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -724,7 +724,7 @@ var haizhouliu = (function () {
     result.push(trueAry, falseAry);
     return result;
   }
-  function reduce(collection, iter = identity, accumulator) {
+  function reduce(collection, iter = identity, accumulator = 0) {
     let pred = iteratee(iter);
     let valueAry = Object.values(collection);
     let keyAry = Object.keys(collection);
@@ -1073,7 +1073,7 @@ var haizhouliu = (function () {
   function subtract(minuend, subtrahend) {
     return minuend - subtrahend;
   }
-  function round(number, p) {
+  function round(number, p = 0) {
     return Math.round(number * 10 ** p) / 10 ** p;
   }
   function sum(array) {
