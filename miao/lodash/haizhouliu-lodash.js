@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2021-01-04 10:00:42
+ * @LastEditTime: 2021-01-10 17:18:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -949,7 +949,7 @@ var haizhouliu = (function () {
   function isNative(value) {
     return value.toString().includes("[native code]");
   }
-  function isNill(value) {
+  function isNil(value) {
     return value === null || value === undefined;
   }
   function isNull(value) {
@@ -979,6 +979,9 @@ var haizhouliu = (function () {
   function isRegExp(value) {
     return checkType(value, "RegExp");
   }
+  function isSafeInteger(value) {
+    return Number.isSafeInteger(value);
+  }
   function isSet(value) {
     return checkType(value, "Set");
   }
@@ -990,6 +993,9 @@ var haizhouliu = (function () {
   }
   function isSymbol(value) {
     return checkType(value, "Symbol");
+  }
+  function isTypedArray(value) {
+    return checkType(value, "Uint8Array");
   }
   function isWeakMap(value) {
     return checkType(value, "WeakMap");
@@ -1011,6 +1017,21 @@ var haizhouliu = (function () {
       return value.split("");
     }
     return [];
+  }
+  function toFinite(value) {
+    if (value == Infinity) {
+      return Number.MAX_VALUE;
+    }
+    if (value == -Infinity) {
+      return -Number.MAX_VALUE;
+    }
+    return Number(value);
+  }
+  function toInteger(value) {
+    if (value == Infinity) {
+      return Number.MAX_VALUE;
+    }
+    return Math.floor(value);
   }
   function toNumber(value) {
     return Number(value);
@@ -1091,6 +1112,51 @@ var haizhouliu = (function () {
     } else {
       return number;
     }
+  }
+  function inRange(number, ...values) {
+    let start = values[0];
+    let end = values[1];
+    if (values.length == 2 && values[1] < values[0]) {
+      start = values[1];
+      end = values[0];
+    } else if (values.length == 1) {
+      start = 0;
+      end = values[0];
+    }
+    return number >= start && number < end;
+  }
+  function assign(object, ...sources) {
+    for (let i = 0; i < sources.length; i++) {
+      let obj = sources[i];
+      Object.keys(obj).forEach((it) => (object[it] = obj[it]));
+    }
+    return object;
+  }
+  function assignIn(object, ...sources) {
+    for (let i = 0; i < sources.length; i++) {
+      let obj = sources[i];
+      for (let key in obj) {
+        object[key] = obj[key];
+      }
+    }
+    return object;
+  }
+  function defaults(object, ...sources) {
+    return defaultsDeep(object, ...sources);
+  }
+  function defaultsDeep(object, ...sources) {
+    sources.forEach((it) => {
+      let keyVal = Object.keys(it);
+      keyVal.forEach((item) => {
+        if (typeof it[item] == "object") {
+          defaultsDeep(object[item], it[item]);
+        }
+        if (!(item in object)) {
+          object[item] = it[item];
+        }
+      });
+    });
+    return object;
   }
   function add(a, b) {
     if (isUndefined(a) || isArray(a)) {
@@ -1320,7 +1386,7 @@ var haizhouliu = (function () {
     isNaN,
     isMatch,
     isNative,
-    isNill,
+    isNil,
     isSet,
     isNull,
     isNumber,
@@ -1328,20 +1394,25 @@ var haizhouliu = (function () {
     isObjectLike,
     isPlainObject,
     isRegExp,
+    isSafeInteger,
     isString,
     isUndefined,
     isSymbol,
+    isTypedArray,
     isWeakMap,
     isWeakSet,
     lt,
     lte,
     toArray,
+    toFinite,
+    toInteger,
     toNumber,
     ceil,
     divide,
     floor,
     max,
     maxBy,
+    mean,
     meanBy,
     min,
     minBy,
@@ -1351,6 +1422,11 @@ var haizhouliu = (function () {
     sum,
     sumBy,
     clamp,
+    inRange,
+    assign,
+    assignIn,
+    defaults,
+    defaultsDeep,
     add,
     identity,
     iteratee,
