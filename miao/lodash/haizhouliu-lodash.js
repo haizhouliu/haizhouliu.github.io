@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2021-01-10 17:18:55
+ * @LastEditTime: 2021-01-15 22:28:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -1167,6 +1167,83 @@ var haizhouliu = (function () {
     }
     return a + b;
   }
+  function findKey(object, iter = iteratee) {
+    let predicate = iteratee(iter);
+    for (let key in object) {
+      if (predicate(object[key])) {
+        return key;
+      }
+    }
+    return undefined;
+  }
+  function findLastKey(object, iter = identity) {
+    let predicate = iteratee(iter);
+    let keyValue = Object.keys(object).reverse();
+    for (let val of keyValue) {
+      if (predicate(object[val])) {
+        return val;
+      }
+    }
+    return undefined;
+  }
+  function forIn(object, iter = identity) {
+    let result = [];
+    let predicate = iteratee(iter);
+    for (let key in object) {
+      result.push(key);
+    }
+    result.forEach((it) => predicate(object[it], it));
+    return object;
+  }
+  function forInRight(object, iter = identity) {
+    let result = [];
+    let predicate = iteratee(iter);
+    for (let key in object) {
+      result.unshift(key);
+    }
+    result.forEach((it) => predicate(object[it], it));
+    return object;
+  }
+  function forOwn(object, iter = identity) {
+    let result = Object.keys(object);
+    let predicate = iteratee(iter);
+    result.forEach((it) => predicate(object[it], it));
+    return object;
+  }
+  function forOwnRight(object, iter = identity) {
+    let result = Object.keys(object).reverse();
+    let predicate = iteratee(iter);
+    result.forEach((it) => predicate(object[it], it));
+    return object;
+  }
+  function functions(object) {
+    let result = [];
+    let keyVal = Object.keys(object);
+    for (let key of keyVal) {
+      if (isFunction(object[key])) result.push(key);
+    }
+    return result;
+  }
+  function functionsIn(object) {
+    let result = [];
+    for (let key in object) {
+      if (isFunction(object[key])) result.push(key);
+    }
+    return result;
+  }
+  function constant(value) {
+    return () => {
+      return value;
+    };
+  }
+  function times(n, iter) {
+    let result = [];
+    let predicate = iteratee(iter);
+    for (let i = 0; i < n; i++) {
+      result.push(predicate(i));
+    }
+    return result;
+  }
   /**
    * @description: 判断 value类型 是否和 type 相等
    * @param {string} value
@@ -1213,6 +1290,7 @@ var haizhouliu = (function () {
   function get(object, path, defaultValue = "default") {
     return property(path)(object) ? property(path)(object) : defaultValue;
   }
+
   function mapKeys(object, iter = identity) {
     let predicate = iteratee(iter);
     let map = {};
@@ -1428,6 +1506,16 @@ var haizhouliu = (function () {
     defaults,
     defaultsDeep,
     add,
+    findKey,
+    findLastKey,
+    forIn,
+    forInRight,
+    forOwn,
+    forOwnRight,
+    functions,
+    functionsIn,
+    constant,
+    times,
     identity,
     iteratee,
     toPath,
