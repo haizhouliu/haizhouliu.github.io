@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-08 15:04:25
- * @LastEditTime: 2021-01-15 22:28:18
+ * @LastEditTime: 2021-01-16 21:00:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \haizhouliu.github.io\miao\lodash\haizhouliu-lodash.js
@@ -1231,6 +1231,78 @@ var haizhouliu = (function () {
     }
     return result;
   }
+  function invert(object) {
+    let obj = {};
+    let keyAry = Object.keys(object);
+    let valAry = Object.values(object);
+    valAry.forEach((it, idx) => (obj[it] = keyAry[idx]));
+    return obj;
+  }
+  function invertBy(object, iter = identity) {
+    let pred = iteratee(iter);
+    let obj = {};
+    let keyAry = Object.keys(object);
+    let valAry = Object.values(object);
+    valAry.forEach((it, idx) => {
+      let key = pred(it);
+      if (obj[key]) {
+        obj[key].push(keyAry[idx]);
+      } else {
+        obj[key] = [keyAry[idx]];
+      }
+    });
+    return obj;
+  }
+  function omit(object, ...values) {
+    let obj = Object.assign({}, object);
+    function t(object, vals) {
+      vals.forEach((it) => {
+        if (isArray(it)) {
+          t(object, it);
+        }
+        if (isString(it)) {
+          delete obj[it];
+        }
+      });
+    }
+    t(object, values);
+    return obj;
+  }
+  function omitBy(object, iter = identity) {
+    let pred = iteratee(iter);
+    let obj = Object.assign({}, object);
+    Object.keys(object).forEach((it) => {
+      if (pred(object[it])) {
+        delete obj[it];
+      }
+    });
+    return obj;
+  }
+  function pick(object, ...values) {
+    let obj = {};
+    function t(object, vals) {
+      vals.forEach((it) => {
+        if (isArray(it)) {
+          t(object, it);
+        }
+        if (isString(it) && it in object) {
+          obj[it] = object[it];
+        }
+      });
+    }
+    t(object, values);
+    return obj;
+  }
+  function pickBy(object, iter = identity) {
+    let pred = iteratee(iter);
+    let obj = {};
+    Object.keys(object).forEach((it) => {
+      if (pred(object[it])) {
+        obj[it] = object[it];
+      }
+    });
+    return obj;
+  }
   function constant(value) {
     return () => {
       return value;
@@ -1514,6 +1586,12 @@ var haizhouliu = (function () {
     forOwnRight,
     functions,
     functionsIn,
+    invert,
+    invertBy,
+    omit,
+    omitBy,
+    pick,
+    pickBy,
     constant,
     times,
     identity,
